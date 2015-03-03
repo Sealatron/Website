@@ -1,9 +1,8 @@
 <?php
-{
-	mysql_connect('localhost');
-	mysql_select_db('test_db');
 
-	if(!isset($_GET['year']))
+	include('header.inc.php');
+
+	if(!isset($_GET['year']) || !is_numeric($_GET['year']))
 	{
 		die("Invalid year specified.");
 	}
@@ -11,20 +10,18 @@
 	{
 		$year = (int)$_GET['year'];
 	}
-	$result = mysql_query("SELECT timestamp, id, title FROM php_blog WHERE FROM_UNIXTIME(timestamp, '%Y') = '$year' ORDER BY id DESC");
+	$result = $database->query("SELECT `timestamp`, `id`, `title` FROM `php_blog` WHERE FROM_UNIXTIME(`timestamp`, '%Y') = '$year' ORDER BY id DESC");
 
-	while($row = mysql_fetch_array($result))
+	foreach ($result as $row)
 	{
 		$date = date("l F d Y", $row['timestamp']);
 		$id = $row['id'];
-		$title = stripslashes($row['title']);
+		$title = $row['title'];
 ?>
-		<p><?php echo $date; ?><br><a href="view_post.php?id=<?php echo $id; ?>">Read post "<?php echo $title; ?>".</a></p>
-		<p><a href="edit.php?id=<?php echo $id;?>">Edit</a></p>
+		<p><?=$date?><br><a href="/view_post.php?id=<?=$id;?>">Read post "<?=$title?>".</a></p>
+		<p><a href="/edit.php?id=<?=$id?>">Edit</a></p>
 <?php
 	}
-	
-	mysql_close();
-}
+
 ?>
-	<a href="./index.php">Home</a>
+<a href="/index.php">Home</a>
