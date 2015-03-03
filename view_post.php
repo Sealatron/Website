@@ -2,63 +2,57 @@
 	$my_username = "USERNAME";
 	$my_password = "PASSWORD";
 
-	mysql_connect ('localhost') ;
-	mysql_select_db ('test_db');
+	include('header.inc.php');
 
 	if (!isset($_GET['id']) || !is_numeric($_GET['id']))
 	{
 		die("Invalid ID specified.");
 	}
-	
+
 	$id = (int)$_GET['id'];
-	$sql = "SELECT * FROM php_blog WHERE id='$id' LIMIT 1";
+	$result = $database->query("SELECT * FROM `php_blog` WHERE `id` = '$id' LIMIT 1");
 
-	$result = mysql_query($sql) or print ("Can't select entries from table php_blog.<br />" . $sql . "<br />" . mysql_error());
-
-	while($row = mysql_fetch_array($result))
+	foreach ($result as $row)
 	{
-		$date = date('D \t\h\e jS \of F, Y \a\t H:i',$row['timestamp']);
-		$title = stripslashes($row['title']);
-		$entry = stripslashes($row['entry']);
+		$date = date('D \t\h\e jS \of F, Y \a\t H:i', $row['timestamp']);
+		$title = $row['title'];
+		$entry = $row['entry'];
 		$password = $row['password'];
 ?>
-		<p><strong><?php echo $title; ?></strong></p>
-	
-		<?php if($password == 1):?>
-			<?php if(isset($_POST['username'])&& $_POST['username'] == $my_username):?>
-				<?php if(isset($_POST['pass'])&& $_POST['pass'] == $my_password):?>
-					<p>
-						<?php echo $entry;?>
-						Posted on <?php echo $date;?>
-					</p>
-				<?php else:?>
-					<p>Sorry, wrong password!</p>
-				<?php endif ;?>
-			<?php else:?>
+		<p><strong><?=$title?></strong></p>
+
+<?php
+		if($password == 1) {
+			if ( isset($_POST['username']) && isset($_POST['password']) && ($_POST['username'] != $my_username || $_POST['password'] != $my_password) ) {
+?>
+				<p>Sorry, wrong password!</p>
+<?php
+				continue;
+			} elseif (!isset($_POST['username'])) {
+?>
 				<p>This is a password protected entry. If you have a password, please log in below.</p>
-				<form method = "post">
+				<form method="post">
 					<p>
 						<strong><label for="username">Username:</label></strong><br />
-						<input type = "text" name="username" id="username" />
+						<input name="username" id="username" />
 					</p>
 					<p>
 						<strong><label for="password">Password:</label></strong><br />
-						<input type = "password" name="pass" id="pass" />
+						<input type="password" name="password" id="password" />
 					</p>
 					<p>
 						<input type ="submit" name="submit" id="submit" value="submit" />
 					</p>
 				</form>
-			<?php endif ;?>
-		<?php else:?>
-			<?php echo $entry;?>
-			<br>
-			Posted on <?php echo $date;?>
-		<?php endif ;?>
-
+<?php
+				continue;
+			}
+		}
+?>
+		<?=nl2br($entry)?><br/>
+		Posted on <?=$date?>
 <?php
 	}
-	mysql_close();
 ?>
 	<br>
-	<a href="./index.php">Home</a>
+	<a href="/index.php">Home</a>
