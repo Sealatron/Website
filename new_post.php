@@ -1,14 +1,16 @@
 <form method="post">
 
-	<p><strong><label for ="title">Title:</label></strong><input type="text" name="title" id="title" size="40"/></p>
+	<p><label for ="title">Title:</label><input type="text" name="title" id="title" size="40"/></p>
 
 	<p><textarea cols="80" rows="20" name="entry" id="entry"></textarea></p>
 
-	<p><strong><label for ="changebox">Password protect?:</label></strong><input type="checkbox" name="password" id="password" value="1"/></p>
+	<p><label for ="changebox">Password protect?:</label><input type="checkbox" name="password" id="password" value="1"/></p>
 
 	<p><input type="submit" name="submit" id="submit" value="Submit"></p>
 </form>
+
 <a href="/index.php">Home</a>
+
 <?php
 	include('header.inc.php');
 	if(isset($_POST['submit']))

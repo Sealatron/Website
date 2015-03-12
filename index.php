@@ -1,10 +1,30 @@
 <?php
-
 	include('header.inc.php');
+
+    if(isset($_SESSION['user_id']))
+    {
+?>
+        <p>
+            You are logged in as user number <?=$_SESSION['user_id']?>.
+            <a href="/logout.php">Logout.</a>
+        </p>
+<?php
+    }
+    else
+    {
+        include('login.php');
+        if(isset($_SESSION['user_id']))
+        {
+            header('Location: /index.php');
+        }
+    }
+?>
+    <hr>
+<?php
 
 	$result = $database->query("SELECT * FROM `php_blog` ORDER BY `timestamp` DESC LIMIT 5");
 
-	foreach ($result as $row)
+	foreach($result as $row)
 	{
 		$date = date("D, d F Y, H:i ",$row['timestamp']);
 
@@ -14,31 +34,30 @@
 		$id = $row['id'];
 ?>
 		<p><strong><?=$title?></strong></p>
-
 <?php
-		if ( $password == 1 ) {
+        if($password == 1)
+        {
+            if(isset($_SESSION['user_id']))
+            {
 ?>
-			<p>This is a password protected entry. If you have a password, please log in below.</p>
-			<form method="post" action="/view_post.php?id=<?=$id?>">
-				<p>
-					<strong><label for="username">Username:</label></strong><br />
-					<input name="username" id="username" />
-				</p>
-				<p>
-					<strong><label for="password">Password:</label></strong><br />
-					<input type="password" name="pass" id="pass" />
-				</p>
-				<p>
-					<input type ="submit" name="submit" id="submit" value="submit" />
-				</p>
-			</form>
+                <p><?=nl2br($entry)?></p><br>
+                <p>Posted on <?=$date?></p>
 <?php
-		} else {
+            }
+            else
+            {
 ?>
-				<p><?=nl2br($entry)?></p><br>
-				<p>Posted on <?=$date?></p>
+                <p>This entry is password protected. Please login above to view.</p>
 <?php
-		}
+            }
+        }
+        else
+        {
+?>
+            <p><?=nl2br($entry)?></p><br>
+            <p>Posted on <?=$date?></p>
+<?php
+        }
 ?>
 		<hr>
 <?php
