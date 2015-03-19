@@ -34,7 +34,7 @@ CREATE TABLE `blog_posts` (
   UNIQUE KEY `post_id` (`post_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `blog_posts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,34 +43,8 @@ CREATE TABLE `blog_posts` (
 
 LOCK TABLES `blog_posts` WRITE;
 /*!40000 ALTER TABLE `blog_posts` DISABLE KEYS */;
+INSERT INTO `blog_posts` VALUES (1,'Test...','Test of table `blog_posts`... fingers crossed... Edit: Did this work?',4,0,1426562825,1426546800),(2,'New Post!','Test of database part 2!',4,0,1426562874,1426546800),(3,'How about this?','Obligatory message.',4,0,1426562931,1426550400),(4,'Access Test','Blah blah blah please ignore.',4,1,1426563043,1426550400),(5,'Test Post Please Ignore','',4,0,1426565811,1426636800),(6,'Post!','This one should post a bunch of  entries off of the main page.',4,0,1426565855,1426550400),(7,'Test of adding entries... IN THE PAST','THE PAST...AST...AST...AST...ast',4,0,1426617691,1395014400);
 /*!40000 ALTER TABLE `blog_posts` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `php_blog`
---
-
-DROP TABLE IF EXISTS `php_blog`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `php_blog` (
-  `id` int(20) NOT NULL AUTO_INCREMENT,
-  `timestamp` int(20) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `entry` longtext NOT NULL,
-  `password` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `php_blog`
---
-
-LOCK TABLES `php_blog` WRITE;
-/*!40000 ALTER TABLE `php_blog` DISABLE KEYS */;
-INSERT INTO `php_blog` VALUES (23,1425178380,'This is a new post!','This is the content of my new post. Yay!',0),(24,1425178620,'This is another new post, only newer!','Some more content! Hurrah!',1),(26,1426048654,'Blah','Blah blah',0);
-/*!40000 ALTER TABLE `php_blog` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -89,7 +63,7 @@ CREATE TABLE `users` (
   `admin` int(11) DEFAULT '0',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +72,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (4,'Adam','$2y$10$aO6zl.ppSo52IYnTzTbYpe3wL2.Z1m/yaSW4mo0C5stYZsSxvHOPC','soandso',1426175747,0),(6,'John','$2y$10$mX1PDOMU/DjwYufdq5sxfu0j49.liIPw2dPoClfh66IPfibzBeJra','',1426182056,0),(7,'Mark','$2y$10$f7dZEXJ8MDV377QIfo7SfeimkA9GyFshXYY6xAuPz7VgP2kFHufSC','',1426182070,0);
+INSERT INTO `users` VALUES (4,'Adam','$2y$10$aO6zl.ppSo52IYnTzTbYpe3wL2.Z1m/yaSW4mo0C5stYZsSxvHOPC','soandso',1426175747,0),(6,'John','$2y$10$mX1PDOMU/DjwYufdq5sxfu0j49.liIPw2dPoClfh66IPfibzBeJra','',1426182056,0),(7,'Mark','$2y$10$f7dZEXJ8MDV377QIfo7SfeimkA9GyFshXYY6xAuPz7VgP2kFHufSC','',1426182070,0),(8,'Lisa','$2y$10$E/DuHIEiNvRwYhLDwroa8eQ5SHCKi4/iraqNTFZ9ZjZLXLN7LB8Vy','',1426206732,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -111,4 +85,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-12 22:48:44
+-- Dump completed on 2015-03-19 12:59:32
