@@ -11,7 +11,7 @@
 
 <?php
 
-    include('../resources/include/header.inc.php');
+    include('header.inc.php');
     
     if(isset($_POST['submit']))
     {
@@ -32,9 +32,7 @@
             $query = "INSERT INTO `users` (`username`, `password`, `e_mail`, `joined_at`, `admin`) VALUES (?, ?, ?, ?, ?)";
             $stmt = $database->prepare($query);
             $result = $stmt->execute(Array($username, $password, $e_mail, $joined_at, $admin));
-            
-            $_SESSION['user_id'] = $database->lastInsertId();
-            header("Location: /index.php");
+            echo "A new user was created!";
         }
         else
         {

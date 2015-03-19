@@ -1,32 +1,27 @@
 <?php
-	include('../resources/include/header.inc.php');
 
-    $distinct_years_query = "SELECT DISTINCT YEAR(FROM_UNIXTIME(`date_to_post`)) FROM `blog_posts`";
-    $distinct_years_stmt = $database->prepare($distinct_years_query);
-	$result = $distinct_years_stmt->execute();
+	include('header.inc.php');
 
-    while($year = $distinct_years_stmt->fetchColumn())
-    {
-        $blog_query = "SELECT * FROM `blog_posts` WHERE YEAR(FROM_UNIXTIME(`date_to_post`)) = :year ";
-        $blog_stmt = $database->prepare($blog_query);
-        $blog_stmt->bindValue(":year",$year);
+	if(!isset($_GET['year']) || !is_numeric($_GET['year']))
+	{
+		die("Invalid year specified.");
+	}
+	else
+	{
+		$year = (int)$_GET['year'];
+	}
+	$result = $database->query("SELECT `timestamp`, `id`, `title` FROM `php_blog` WHERE FROM_UNIXTIME(`timestamp`, '%Y') = '$year' ORDER BY id DESC");
+
+	foreach ($result as $row)
+	{
+		$date = date("l F d Y", $row['timestamp']);
+		$id = $row['id'];
+		$title = $row['title'];
 ?>
-        <strong><?=$year?></strong><br>
+		<p><?=$date?><br><a href="/view_post.php?id=<?=$id;?>">Read post "<?=$title?>".</a></p>
+		<p><a href="/edit.php?id=<?=$id?>">Edit</a></p>
 <?php
-        if($blog_stmt->execute())
-        {
-            while($entry = $blog_stmt->fetch())
-            {
-                $entry_date = date('F jS',$entry['date_to_post']);
-?>
-                <a href="view_post.php?id=<?=$entry['post_id']?>"><?=$entry['title']?></a>
-                <?=$entry_date?>
-                <br>
-<?php
-            }
-        }
-        echo "<br><hr>";
-    }
+	}
 
 ?>
 <a href="/index.php">Home</a>

@@ -3,7 +3,6 @@
         <label>Username:</label> <input type="username" name="username" size="20"/>
         <label>Password:</label> <input type="password" name="password" size="20"/>
         <input type="submit" name="submit" value="Login">
-         or click <a href="/new_user.php">here</a> to register an account.
     </p>
 </form>
 
@@ -21,6 +20,7 @@
         {
            if(password_verify($password_attempt, $row['password']))
            {
+                echo "Correct Password! <br>";
                 $_SESSION['user_id'] = $row['user_id'];
            }
            else

@@ -1,6 +1,6 @@
 <?php
 
-	include('../resources/include/header.inc.php');
+	include('header.inc.php');
 
 	if(!isset($_GET['id']) || empty($_GET['id']) || !is_numeric($_GET['id']))
 	{
@@ -12,28 +12,28 @@
 	{
 		$entry = htmlspecialchars(strip_tags($_POST['entry']));
 		$title = htmlspecialchars(strip_tags($_POST['title']));
-		$access = (isset($_POST['access'])) ? 1 : 0;
-		$created_at = time();
+		$password = (isset($_POST['password'])) ? 1 : 0;
+		$timestamp = time();
 
-		$stmt = $database->prepare("UPDATE `blog_posts` SET `created_at`=?, `title`=?, `entry`=?, `access`=? WHERE `post_id`=? LIMIT 1");
-		$result = $stmt->execute(Array($created_at, $title, $entry, $access, $id));
-		header("Location: /index.php");
+		$stmt = $database->prepare("UPDATE `php_blog` SET `timestamp`=?, `title`=?, `entry`=?, `password`=? WHERE `id`=? LIMIT 1");
+		$result = $stmt->execute(Array($timestamp, $title, $entry, $password, $id));
+		header("Location: /view_post.php?id=" . $id);
 	}
 
 	if(isset($_POST['delete']))
 	{
-		$stmt = $database->prepare("DELETE FROM `blog_posts` where `post_id`=?");
+		$stmt = $database->prepare("DELETE FROM `php_blog` where `id`=?");
 		$result = $stmt->execute(Array($id));
 		header( "Location: /index.php" );
 	}
 
-	$result = $database->query("SELECT * FROM `blog_posts` WHERE `post_id`='$id'");
+	$result = $database->query("SELECT * FROM php_blog WHERE id='$id'");
 
 	$row = $result->fetch();
-	$old_timestamp = $row['created_at'];
+	$old_timestamp = $row['timestamp'];
 	$old_title = $row['title'];
 	$old_entry = $row['entry'];
-	$old_password = $row['access'];
+	$old_password = $row['password'];
 
 ?>
 
